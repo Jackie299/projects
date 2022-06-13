@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <title>Register Page</title>
@@ -308,8 +308,12 @@ input[type="email"]:focus {
     <h1>Create an account</h1>
     <form class="form" action="RegisterServlet" method="post" name="registerForm">
       <div class="alert alert-error"></div>
-      <input type="text" placeholder="User Name" name="username" required />
+      <input type="text" placeholder="First Name" name="First Name" required />
+      <input type="text" placeholder="Last Name" name="Last Name" required />
+      <input type="text" placeholder="Address" name="Address" required />
+      <input type="text" placeholder="Phone Number" name="Phone Number" required />
       <input type="email" placeholder="Email" name="email" required />
+      <input type="text" placeholder="User Name" name="username" required />
       <input type="password" placeholder="Password" name="password" autocomplete="new-password" required />
       <input type="password" placeholder="Confirm Password" name="confirmpassword" autocomplete="new-password" required />
       <div class="checkbox mb-3">

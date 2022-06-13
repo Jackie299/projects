@@ -8,7 +8,6 @@ import com.revature.services.AuthService;
 import com.revature.util.ConnectionFactory;
 
 import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -219,7 +218,7 @@ public class ReimbursementDAO {
 			pstmt.setDouble(1, reimbursement.getAmount());
 			pstmt.setInt(2, user.getId());
 			pstmt.setString(3, reimbursement.getDescription());
-			pstmt.setBlob(4, (Blob) reimbursement.getReceipt());
+			pstmt.setBlob(4, reimbursement.getReceipt());
 			pstmt.execute();
 			ResultSet rs = pstmt.getGeneratedKeys();
 			if (rs.next()) {

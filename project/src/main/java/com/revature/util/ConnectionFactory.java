@@ -3,6 +3,7 @@ package com.revature.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+
 /**
  * <p>
  * This ConnectionFactory class follows the Singleton Design Pattern and
@@ -51,16 +52,18 @@ public class ConnectionFactory {
 	 * Typically, this is accomplished via the use of the
 	 * {@link java.sql.DriverManager} class.
 	 * </p>
+	 * @throws ClassNotFoundException 
 	 */
 	public Connection getConnection() {
 		Connection conn = null;
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver"); // Is optional
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ers", "root", "Vampire22");
+			Class.forName("com.mysql.cj.jdbc.Driver"); 
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ers", "root", "Vampire22");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 
 		return conn;
 	}

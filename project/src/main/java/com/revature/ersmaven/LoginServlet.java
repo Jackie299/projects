@@ -3,9 +3,7 @@ package com.revature.ersmaven;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
@@ -14,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.tomcat.dbcp.pool2.ObjectPool;
 
@@ -28,11 +27,12 @@ import com.revature.util.ConnectionFactory;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
-	 * Default constructor
+	 * Default constructor.
 	 */
-	public LoginServlet() throws ClassNotFoundException, SQLException {
+	public LoginServlet() {
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -54,6 +54,8 @@ public class LoginServlet extends HttpServlet {
 		Optional<User> user = userDao.getByUsername(username);
 		System.out.println("user isPresent :" + user.isPresent());
 		if (user.isPresent() && user.get().getPassword().equals(password)) {
+			HttpSession session = request.getSession();
+			session.setAttribute("username", username);
 			response.sendRedirect("HomeServlet?username=" + username);
 		} else {
 			response.sendError(404, "Invalid Credentials");
@@ -69,6 +71,5 @@ public class LoginServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+
 }
-
-
