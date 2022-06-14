@@ -5,6 +5,7 @@
 <title>Create Reimbursement Request</title>
 </head>
 <body>
+<form action="Serv" method="post" enctype="multipart/form-data">
 	<table>
 		<thead>
 			<tr>
@@ -13,19 +14,20 @@
 				<th>Value</th>
 			</tr>
 		</thead>
+	
 		<tbody>
-			<form action="CreateReimbursement">
-				<tr>
-					<td>1</td>
-					<td>Enter Amount :</td>
-					<td><input type="number" name="amount"
-						placeholder="Enter Reimbursement Amount Here" /></td>
-				</tr>
+		
+			<tr>
+				<td>1</td>
+				<td>Enter Amount :</td>
+				<td><input type="number" name="amount"
+					placeholder="Amount" /></td>
+			</tr>
 			<tr>
 				<td>2</td>
 				<td>Enter Description:</td>
 				<td><input type="text" name="description"
-					placeholder="Enter Reimbursement Details Here" /></td>
+					placeholder="Description" /></td>
 			</tr>
 			<tr>
 				<td>3</td>
@@ -37,8 +39,9 @@
 				<td><input type="reset" value="Clear" /></td>
 				<td><input type="submit" value="Create Reimburse Request" /></td>
 			</tr>
-			</form>
+		
 		</tbody>
 	</table>
+</form>
 </body>
 </html>

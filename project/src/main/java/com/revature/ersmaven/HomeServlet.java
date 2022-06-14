@@ -25,91 +25,88 @@ import com.revature.services.ReimbursementService;
 @WebServlet("/HomeServlet")
 public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public HomeServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
-	 * @see HttpServlet#HttpServlet()
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	public HomeServlet() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		// response.getWriter().append("Served at: ").append(request.getContextPath());
 		response.setContentType("text/html");
-		AuthService authService = new AuthService();
+		AuthService authServ = new AuthService();
 		PrintWriter out = response.getWriter();
 		String username = request.getParameter("username");
-
-//		System.out.println("username in HomeServlet :" + username);
 		UserDAO userDao = new UserDAO();
-		Optional<User> optionalUser = userDao.getByUsername(username);
-		User user = optionalUser.get();
-		System.out.println("User =" + user);
-		ReimbursementService reimburseService = new ReimbursementService();
-		Role role = user.getRole();
-		// System.out.println("Finance Manager ?? :" +
-		// role.equals(Role.FINANCE_MANAGER));
-
+		Optional<User> optionUser = userDao.getByUsername(username);
+		User user = optionUser.get();
+		System.out.println("user = "+user);
+		ReimbursementService reimburseServ = new ReimbursementService();
+		Role role =user.getRole();
 		int id = user.getId();
-		int flag = 0;
+		int flag=0;
 		List<Reimbursement> reimburseList = new ArrayList<Reimbursement>();
 		if (role.equals(Role.EMPLOYEE)) {
-			reimburseList = reimburseService.getReimbursementByAuthor(id);
+			reimburseList = reimburseServ.getReimbursementByAuthor(id);
 		} else if (role.equals(Role.FINANCE_MANAGER)) {
-			flag = 1;
-			reimburseList = reimburseService.getAllReimbursement();
+			flag=1;
+			reimburseList = reimburseServ.getAllReimbursement();
 		}
-
-		out.println("<html> <head> <title> Reimbursement Details </title> </head> <body>"
-				+ "<a href='createreimburse.html'>Create a Reimbursement Request </a> ");
 		String firstName = null;
 		String lastName = null;
-		String fullName = null;
-		if (optionalUser.isPresent()) {
+		String full_Name = null;
+		if (optionUser.isPresent()) {
 			firstName = user.getFirstName();
 			lastName = user.getLastName();
-			fullName = firstName + lastName;
+			full_Name = firstName + lastName;
 		}
-		out.println("Welcome, <a href=''>" + fullName + " </a>");
+		
+		out.println("Welcome, <a href=''>" + full_Name + " </a>");
 		out.println("<a href='Logout'>Logout</a>");
-		out.println(
-				"<table border='1'> <thead> <tr> <th> ID </th> <th> Amount </th> <th> Author </th> <th> Resolver </th> <th> Status </th> <th>Creation Date </th> <th> Resolution Date </th> <th>Receipt Image </th> ");
-		if (flag == 1) {
-			out.println("<th>Actions </th>");
+		out.println("</tbody></table></body></html>");
+		
+		if (role.equals(Role.EMPLOYEE)) {
+			out.println("<html> <head> <title> Review Reimbursement Requests </title> </head> <body> <h1> Reimbursement Requests </h1>"
+					+"<table border='1'> <thead> <tr> <th> ID </th> <th> Amount </th> <th> Author </th> <th> Resolver </th> <th> Status </th> <th> Request Date </th> <th> Approve Date </th></thead>");
 		}
-		out.println("</tr></thead><tbody>");
+		
+		
+		if (flag == 1) {
+			out.println("<head> <title> Review Reimbursement Requests </title> </head> <body> <h1> Reimbursement Requests </h1>"
+					+ "<table border='1'> <thead> <tr> <th> ID </th> <th> Amount </th> <th> Author </th> <th> Resolver </th> <th> Status </th> <th> Request Date </th> <th> Approve Date </th><th> Adjudicate </th> </thead>");
+		}
 		for (Reimbursement reimbursement : reimburseList) {
-			out.print("<tr> <td>" + reimbursement.getId() + "</td>");
-			out.print("<td>" + reimbursement.getAmount() + "</td>");
-			out.print("<td>" + reimbursement.getAuthor() + "</td>");
-			out.print("<td>" + reimbursement.getResolver() + "</td>");
-			out.print("<td>" + reimbursement.getStatus() + "</td>");
-			out.print("<td>" + reimbursement.getCreationDate() + "</td>");
-			out.print("<td>" + reimbursement.getResolutionDate() + "</td>");
-			out.print("<td>" + reimbursement.getReceipt() + "</td>");
+			out.println("<tr> <td>" +reimbursement.getId()+"</td>");
+			out.println("<td>" +reimbursement.getAmount()+"</td>");
+			out.println("<td>" +reimbursement.getAuthor()+"</td>");
+			out.println("<td>" +reimbursement.getResolver()+"</td>");
+			out.println("<td>" +reimbursement.getStatus()+"</td>");
+			out.println("<td>" +reimbursement.getCreationDate()+"</td>");
+			out.println("<td>" +reimbursement.getResolutionDate()+"</td>");
 			if (flag == 1) {
-				out.println("<td> <a href=''> Approve </a> ||<a href=''> Deny </a> </td>");
+				out.println("<td> <a href='ApproveServletForm'> Approve </a> |<a href=''> Deny </a> </td>");
 			}
 			out.println("</tr>");
 		}
-		out.print("</tbody></table> </body> </html>");
+		if (role.equals(Role.EMPLOYEE)) {
+			out.println("<a href='createreimburse.html'> Submit Reimbursement Request");
+			}
+		
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
 }
+
